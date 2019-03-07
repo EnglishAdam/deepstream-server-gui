@@ -1,5 +1,6 @@
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const pkg = require('./package')
+const env = require('dotenv').config()
 
 module.exports = {
   mode: 'spa',
@@ -52,6 +53,14 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+  },
+
+  /**
+   * Added env file
+   */
+  env: {
+    ...env.parsed
+    // BASE_URL: process.env.BASE_URL || 'http://localhost:3000'
   },
 
   /*
