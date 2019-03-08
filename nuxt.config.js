@@ -38,7 +38,7 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['@/plugins/vuetify'],
+  plugins: ['@/plugins/vuetify', '~/plugins/axios'],
 
   /*
   ** Nuxt.js modules
@@ -52,15 +52,15 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    // See https://github.com/nuxt-community/axios-module#options
+    baseURL: env.parsed.BASE_URL
+    // proxyHeaders: false,
+    // credentials: false
   },
-
   /**
    * Added env file
    */
   env: {
     ...env.parsed
-    // BASE_URL: process.env.BASE_URL || 'http://localhost:3000'
   },
 
   /*
