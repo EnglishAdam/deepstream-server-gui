@@ -52,7 +52,7 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    baseURL: env.parsed.BASE_URL
+    baseURL: process.env.BASE_URL || env.parsed.BASE_URL || null
     // proxyHeaders: false,
     // credentials: false
   },
@@ -60,7 +60,11 @@ module.exports = {
    * Added env file
    */
   env: {
-    ...env.parsed
+    SERVER_URL: process.env.SERVER_URL || env.parsed.SERVER_URL || null,
+    BASE_URL: process.env.BASE_URL || env.parsed.BASE_URL || null,
+    DS_WSS_SERVER: process.env.DS_WSS_SERVER || env.parsed.DS_WSS_SERVER || null,
+    DS_HTTPS_SERVER: process.env.DS_HTTPS_SERVER || env.parsed.DS_HTTPS_SERVER || null,
+    DS_HEALTH_CHECK: process.env.DS_HEALTH_CHECK || env.parsed.DS_HEALTH_CHECK || null
   },
 
   /*
