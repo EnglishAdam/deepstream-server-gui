@@ -1,6 +1,6 @@
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const pkg = require('./package')
-const env = require('dotenv').config()
+// const env = require('dotenv').config()
 
 module.exports = {
   mode: 'spa',
@@ -52,7 +52,7 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    baseURL: process.env.BASE_URL || (env.parsed) ? env.parsed.BASE_URL : null
+    baseURL: process.env.BASE_URL
     // proxyHeaders: false,
     // credentials: false
   },
@@ -60,11 +60,11 @@ module.exports = {
    * Added env file
    */
   env: {
-    SERVER_URL: process.env.SERVER_URL || (env.parsed) ? env.parsed.SERVER_URL : null,
-    BASE_URL: process.env.BASE_URL || (env.parsed) ? env.parsed.BASE_URL : null,
-    DS_WSS_SERVER: process.env.DS_WSS_SERVER || (env.parsed) ? env.parsed.DS_WSS_SERVER : null,
-    DS_HTTPS_SERVER: process.env.DS_HTTPS_SERVER || (env.parsed) ? env.parsed.DS_HTTPS_SERVER : null,
-    DS_HEALTH_CHECK: process.env.DS_HEALTH_CHECK || (env.parsed) ? env.parsed.DS_HEALTH_CHECK : null
+    SERVER_URL: process.env.SERVER_URL,
+    BASE_URL: process.env.BASE_URL,
+    DS_WSS_SERVER: process.env.DS_WSS_SERVER,
+    DS_HTTPS_SERVER: process.env.DS_HTTPS_SERVER,
+    DS_HEALTH_CHECK: process.env.DS_HEALTH_CHECK
   },
 
   /*

@@ -27,8 +27,10 @@ export default {
   asyncData(ctx) {
     console.log('@', ctx)
     return {
-      baseUrl: ctx.env.BASE_URL,
-      healthCheck: ctx.env.DS_HEALTH_CHECK
+      // baseUrl: ctx.env.BASE_URL,'
+      // healthCheck: ctx.env.DS_HEALTH_CHECK
+      baseUrl: 'ctx.env.BASE_URL',
+      healthCheck: 'ctx.env.DS_HEALTH_CHECK'
     }
   },
 
