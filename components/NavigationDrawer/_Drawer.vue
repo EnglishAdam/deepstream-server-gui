@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="value" clipped fixed:app="app">
+  <v-navigation-drawer v-model="value" clipped fixed :app="app">
     <v-list>
       <v-list-tile v-for="(item, index) in items" :key="'navigation-sidemenu-' + index" :to="item.to" router exact>
         <v-list-tile-action>

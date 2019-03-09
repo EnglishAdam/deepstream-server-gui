@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar fixed clipped-left app>
+  <v-toolbar fixed clipped-left :app="app">
     <v-toolbar-side-icon @click="$emit('click')" />
     <v-toolbar-title v-text="title" />
     <v-spacer />
