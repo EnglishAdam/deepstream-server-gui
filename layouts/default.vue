@@ -1,12 +1,6 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
+    <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
       <v-list>
         <v-list-tile
           v-for="(item, i) in items"
@@ -31,28 +25,28 @@
     >
       <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-btn
-        @click.stop="miniVariant = !miniVariant"
         icon
+        @click.stop="miniVariant = !miniVariant"
       >
         <v-icon>{{ `chevron_${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
       <v-btn
-        @click.stop="clipped = !clipped"
         icon
+        @click.stop="clipped = !clipped"
       >
         <v-icon>web</v-icon>
       </v-btn>
       <v-btn
-        @click.stop="fixed = !fixed"
         icon
+        @click.stop="fixed = !fixed"
       >
         <v-icon>remove</v-icon>
       </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <v-btn
-        @click.stop="rightDrawer = !rightDrawer"
         icon
+        @click.stop="rightDrawer = !rightDrawer"
       >
         <v-icon>menu</v-icon>
       </v-btn>
