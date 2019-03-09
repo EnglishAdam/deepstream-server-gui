@@ -26,7 +26,7 @@
               <!-- Protocol Select -->
 
               <v-flex xs12>
-                <v-text-field v-model="url" label="URL" placeholder="127.0.0.1" />
+                <v-text-field v-model="wsUrl" label="URL" placeholder="127.0.0.1" />
               </v-flex>
               <!-- Input for URL -->
             </v-layout>
@@ -34,12 +34,12 @@
           <!-- Inputs for URL -->
           
           <v-flex xs12>
-            <v-text-field v-model="username" label="Username" placeholder="admin" />
+            <v-text-field v-model="authUsername" label="Username" placeholder="admin" />
           </v-flex>
           <!-- Input for URL -->
 
           <v-flex xs12>
-            <v-text-field v-model="password" label="Password" placeholder="password" />
+            <v-text-field v-model="authPassword" label="Password" placeholder="password" />
           </v-flex>
           <!-- Input for URL -->
         </v-layout>
@@ -50,7 +50,7 @@
     <v-card-actions>
       <v-spacer />
 
-      <v-btn color="primary" @click="login">
+      <v-btn color="primary" :loading="isLoggingIn" @click="login">
           Login
       </v-btn>
     </v-card-actions>
@@ -62,7 +62,7 @@
 export default {
   data() {
     return {
-      url: 'localhost:8080', // Deepstream websockets url
+      wsUrl: 'localhost:8080', // Deepstream websockets url
       // Deepstream connection options
       options: {
         /**
@@ -83,8 +83,16 @@ export default {
       },
       protocolList: ['ws://', 'wss://'], // Available protocols
       selectedProtocol: 'ws://', // Select protocol
-      username: '', // Login username
-      password: '' // Login password
+      authType: 'email', // Conection type
+      authUsername: '', // Login username
+      authPassword: '', // Login password
+      isLoggingIn: false, // Flag indicating if logging in
+      isLoggingInSuccess: false, // Flag indicaing state of login
+      loginData: {}, // Container for successful logging in data
+      connectionState: null, // Connection for the container state
+      error: null, // Error message container
+      errorEvent: null, // Error event message container
+      errorTopic: null // Error topic message container
     }
   },
 
@@ -92,8 +100,19 @@ export default {
     /**
      * Returns the selected url
      */
-    getUrl() {
-      return this.selectedProtocol + this.url
+    url() {
+      return this.selectedProtocol + this.wsUrl
+    },
+
+    /**
+     * Returns the authentication param
+     */
+    authParams() {
+      return {
+        type: this.authType,
+        email: this.authUsername,
+        password: this.authPassword
+      }
     }
   },
 
@@ -102,21 +121,46 @@ export default {
      * Logs into and sets up the Deepstream client
      */
     login() {
-      console.log('Logging in to: ', this.getUrl)
-      console.log('ds', this.$deepstream, Object.keys(this.$deepstream))
-      console.log('client', this.$ds, Object.keys(this.$ds))
-
       // Log into deepstream
       // Set up client
-      this.$ds = this.$deepstream(this.getUrl, this.options)
+      console.log('Setting Up Deepstream Client')
+      this.loginData = {}
+      this.isLoggingIn = false
+      this.isLoggingInSuccess = false
+      this.$ds = this.$deepstream(this.url, this.options)
 
-      console.log('this.$ds', this.$ds)
+      // Set up login events
+      console.log('Setting Up Deepstream Client Events')
+      this.$ds.on('connectionStateChanged', connectionState => {
+        this.connectionState = connectionState
+      })
 
-      // Log in
-      this.$ds = this.$deepstream(this.getUrl, this.options).login()
-      // this.$ds.login()
+      this.$ds.on('error', (error, event, topic) => {
+        this.error = error
+        this.errorEvent = event
+        this.errorTopic = topic
+      })
 
-      console.log('this.$ds.login()', this.$ds)
+      // Login
+      console.log('Logging in Deepstream Client')
+      this.isLoggingIn = true
+      this.$ds.login(this.authParams, (success, data) => {
+        // Set login status
+        this.isLoggingInSuccess = !!success
+
+        // Set login data
+        this.loginData = data
+
+        if (success) {
+          console.log('Log In Successful')
+          this.$router.push('dashboard')
+        } else {
+          console.log('Log In Failed')
+        }
+
+        // Set logging in status
+        this.isLoggingIn = false
+      })
     }
   }
 }
