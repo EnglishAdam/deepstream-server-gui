@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
-    <v-layout column justify-center align-center>
-      <v-flex>
+    <v-layout row justify-center align-center>
+      <v-flex xs12 sm6 md4>
         <ds-connection-form />
       </v-flex>
       <!-- Connection Form -->

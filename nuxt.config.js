@@ -38,7 +38,11 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['@/plugins/vuetify', '~/plugins/axios'],
+  plugins: [
+    '@/plugins/vuetify',
+    '~/plugins/axios',
+    { src: '~/plugins/deepstream', ssr: false }
+  ],
 
   /*
   ** Nuxt.js modules
