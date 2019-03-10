@@ -19,7 +19,8 @@ export const state = () => ({
   connectionState: '', // Connection for the container state
   error: null, // Error message container
   errorEvent: null, // Error event message container
-  errorTopic: null // Error topic message container
+  errorTopic: null, // Error topic message container
+  connectionOptions: null // Container for connection options
 })
 
 export const getters = {
@@ -40,7 +41,8 @@ export const getters = {
   connectionState: state => state.connectionState,
   error: state => state.error,
   errorEvent: state => state.errorEvent,
-  errorTopic: state => state.errorTopic
+  errorTopic: state => state.errorTopic,
+  connectionOptions: state => state.connectionOptions
 }
 
 export const mutations = {
@@ -70,6 +72,13 @@ export const mutations = {
    */
   setErrorTopic: (state, payload) => {
     state.errorTopic = payload.topic
+  },
+
+  /**
+   * Set returned connection error topic
+   */
+  setConnectionOptions: (state, payload) => {
+    state.connectionOptions = Object.assign({}, payload.options)
   }
 }
 
@@ -110,5 +119,13 @@ export const actions = {
   setErrorTopic({ commit }, payload) {
     if (payload.hasOwnProperty('topic')) commit('setErrorTopic', payload)
     else console.warn('Payload does not have "topic" property in "connection/setErrorTopic"')
+  },
+
+  /**
+   * Set connection optons
+   */
+  setConnectionOptions({ commit }, payload) {
+    if (payload.hasOwnProperty('options')) commit('setConnectionOptions', payload)
+    else console.warn('Payload does not have "options" property in "connection/setConnectionOptions"')
   }
 }

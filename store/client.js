@@ -127,7 +127,7 @@ export const actions = {
     dispatch('setLoggedIn', { status: false })
 
     // Initialise client
-    this.$ds.$client = null
+    // this.$ds.$client = null
   },
 
   /**

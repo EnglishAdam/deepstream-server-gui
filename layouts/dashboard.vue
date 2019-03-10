@@ -26,6 +26,8 @@ import _Drawer from '~/components/NavigationDrawer/_Drawer.vue'
 import _Toolbar from '~/components/NavigationDrawer/_Toolbar.vue'
 
 export default {
+  middleware: ['connectionCheck'],
+
   components: {
     'ds-navigation-drawer-left': _Drawer,
     'ds-navigation-toolbar': _Toolbar
