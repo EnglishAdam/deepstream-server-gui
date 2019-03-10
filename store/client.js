@@ -143,6 +143,7 @@ export const actions = {
 
     // Login
     this.$ds.$client.login(payload.authParams, (success, data) => {
+      console.log('Login', success, data)
       // Set login status
       dispatch('setLoggedIn', { status: success })
 
