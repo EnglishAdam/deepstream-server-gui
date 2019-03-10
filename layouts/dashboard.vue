@@ -1,15 +1,17 @@
 <template>
   <v-app>
-    <ds-navigation-drawer>
-      <v-content>
-        <v-container>
-          <nuxt />
-        </v-container>
-      </v-content>
-      <!-- Route -->
+    <ds-navigation-drawer-left :value="drawer" :items="items" app />
+    <!-- Navigation Draw -->
 
-    </ds-navigation-drawer>
-    <!-- Navigation Drawer -->
+    <ds-navigation-toolbar :title="title" @click="drawer = !drawer" app />
+    <!-- Toolbar -->
+
+    <v-content>
+      <v-container app>
+        <nuxt />
+      </v-container>
+    </v-content>
+    <!-- Route -->
 
     <v-footer fixed app>
       <span>Adam English, &copy; 2019</span>
@@ -19,10 +21,32 @@
 </template>
 
 <script>
-import NavigationDrawer from '~/components/nav/NavigationDrawer'
+import _Drawer from '~/components/NavigationDrawer/_Drawer.vue'
+import _Toolbar from '~/components/NavigationDrawer/_Toolbar.vue'
+
 export default {
   components: {
-    'ds-navigation-drawer': NavigationDrawer
+    'ds-navigation-drawer-left': _Drawer,
+    'ds-navigation-toolbar': _Toolbar
+  },
+
+  data() {
+    return {
+      drawer: false,
+      items: [
+        {
+          icon: 'apps',
+          title: 'Connection',
+          to: '/'
+        },
+        {
+          icon: 'bubble_chart',
+          title: 'Record',
+          to: '/inspire'
+        }
+      ],
+      title: 'Deepstream Inspector'
+    }
   }
 }
 </script>

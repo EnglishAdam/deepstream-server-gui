@@ -1,8 +1,9 @@
 <template>
-  <v-container>
-    <v-layout>
-      <v-flex>
-        <p>Dashboard</p>
+  <v-container fill-height>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <p class="headline">Dashboard</p>
+        <p class="subheading">Connection status:</p>
       </v-flex>
     </v-layout>
   </v-container>
