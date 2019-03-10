@@ -1,10 +1,6 @@
 import Vue from 'vue'
 import deepstream from 'deepstream.io-client-js'
 
-// Create cotainers
-// let deepstreamObj = deepstream
-// let clientObj = null
-
 class DS {
   constructor(deepstream) {
     this._ds = deepstream
@@ -30,15 +26,6 @@ class DS {
 
 const ds = new DS(deepstream)
 
-// Vue.prototype.$deepstream = ds.$deepstream
-// Vue.prototype.$ds = ds.$ds
-
-// export default ({ app }, inject) => {
-//   // Set the function directly on the context.app object
-//   app.$deepstream = ds.$deepstream
-//   app.$ds = ds.$ds
-// }
-
 // Create ds plugin
 const Deepstream = {}
 Deepstream.install = function(Vue, options) {
@@ -61,11 +48,6 @@ Vue.use(Deepstream)
 
 // Attach to store and context
 export default ({ app }, inject) => {
-  // Add $deepstream
-  // inject('deepstream', function() {
-  //   return ds.$deepstream
-  // })
-
   // Add $ds
   inject('ds', ds)
 }
