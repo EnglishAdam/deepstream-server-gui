@@ -84,8 +84,8 @@ export const actions = {
   /**
    * Setup client
    */
-  init({ dispatch }, payload) {
-    if (payload.hasOwnProperty('url')) return console.warn('Unable to login, no "url" supplied')
+  init({ getters, dispatch }, payload) {
+    if (!payload.hasOwnProperty('url')) return console.warn('Unable to login, no "url" supplied')
     if (getters.isInit) return console.warn('Unable to initalise, client already initialised')
     if (getters.isLoggedIn) return console.warn('Unable to initalise, client already logged in')
 
@@ -96,14 +96,14 @@ export const actions = {
     dispatch('setLoggedIn', { status: false })
 
     // Initialise client
-    this.$ds = this.$deepstream(payload.url, payload.options)
+    this.$ds.$client = this.$ds.$deepstream(payload.url, payload.options)
 
     // Set up login events
-    this.$ds.on('connectionStateChanged', connectionState => {
+    this.$ds.$client.on('connectionStateChanged', connectionState => {
       dispatch('connection/setConnectionState', { connectionState }, { root: true })
     })
 
-    this.$ds.on('error', (error, event, topic) => {
+    this.$ds.$client.on('error', (error, event, topic) => {
       dispatch('connection/setError', { error }, { root: true })
       dispatch('connection/setErrorEvent', { event }, { root: true })
       dispatch('connection/setErrorTopic', { topic }, { root: true })
@@ -114,10 +114,27 @@ export const actions = {
   },
 
   /**
+   * Cancel client
+   */
+  cancel({ getters, dispatch }, payload) {
+    // If logged in close
+    if (getters.isLoggedIn && this.$ds.$client.close) this.$ds.$client.close()
+
+    // Pre-set init state
+    dispatch('setInit', { status: false })
+    dispatch('setloginData', { data: {} })
+    dispatch('setLoggingIn', { status: false })
+    dispatch('setLoggedIn', { status: false })
+
+    // Initialise client
+    this.$ds.$client = null
+  },
+
+  /**
    * Logs into client
    */
-  login({ dispatch, getters }, payload) {
-    if (payload.hasOwnProperty('authParams')) return console.warn('Login failed, no "authParams" in "client/login"')
+  login({ getters, dispatch }, payload) {
+    if (!payload.hasOwnProperty('authParams')) return console.warn('Login failed, no "authParams" in "client/login"')
     if (!getters.isInit) return console.warn('Unable to login, client not initialised')
     if (getters.isLoggedIn) return console.warn('Unable to login, client already logged in')
 
@@ -125,7 +142,7 @@ export const actions = {
     dispatch('setLoggingIn', { status: true })
 
     // Login
-    this.$ds.login(payload.authParams, (success, data) => {
+    this.$ds.$client.login(payload.authParams, (success, data) => {
       // Set login status
       dispatch('setLoggedIn', { status: success })
 

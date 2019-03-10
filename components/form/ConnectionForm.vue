@@ -13,8 +13,8 @@
 
     <v-card-text class="pa-0">
       <v-stepper class="elevation-0" v-model="step">
-        <v-stepper-header class="elevation-0">
-          <v-stepper-step step="1" :complete="step > 1">
+        <v-stepper-header class="elevation-0 grey lighten-3">
+          <v-stepper-step step="1" :complete="isInit">
             Setup Connection
             <!-- <small>Optionally supply connection options</small> -->
           </v-stepper-step>
@@ -22,7 +22,7 @@
           <v-divider />
 
           <v-stepper-step step="2" :complete="step > 2">
-            Server Login
+            Login
             <!-- <small>Optionally supply authentication parameters</small> -->
           </v-stepper-step>
         </v-stepper-header>
@@ -32,78 +32,103 @@
 
         <v-stepper-items>
           <v-stepper-content step="1">
-            <!-- <v-card class="mb-5">
-              <v-card-text> -->
-                <v-layout row>
-                  <v-flex xs12>
-                    <v-form>
-                      <v-layout row wrap>
+            <v-layout row>
+              <v-flex xs12>
+                <v-form>
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <v-layout row>
+                        <v-flex xs2>
+                          <v-select
+                            v-model="selectedProtocol"
+                            :items="PROTOCOL_LIST"
+                            label="Protocol"
+                          />
+                        </v-flex>
+                        <!-- Protocol Select -->
+
                         <v-flex xs12>
-                          <v-layout row>
-                            <v-flex xs2>
-                              <v-select
-                                v-model="selectedProtocol"
-                                :items="PROTOCOL_LIST"
-                                label="Protocol"
-                              />
-                            </v-flex>
-                            <!-- Protocol Select -->
-
-                            <v-flex xs12>
-                              <v-text-field v-model="wsUrl" label="URL" placeholder="127.0.0.1" />
-                            </v-flex>
-                            <!-- Input for URL -->
-                          </v-layout>
-                        </v-flex>
-                        <!-- Inputs for URL -->
-
-                        <v-flex v-if="showOptions" class="text-xs-center" xs12>
-                          <v-btn flat @click="showOptions = true">
-                            <v-icon>add</v-icon> 
-                            Customise Connection Options
-                          </v-btn>
-                        </v-flex>
-                        <!-- Input for URL -->
-
-                        <v-flex v-else xs12>
-                          <v-textarea
-                            v-model="options"
-                            box
-                            label="Connection Options"
-                            hint="Set the connection options"
-                            auto-grow
-                            :placeholder="JSON.stringify(DEFAULT_OPTIONS, null, 2)"
+                          <v-text-field
+                            v-model="wsUrl"
+                            label="URL"
+                            placeholder="127.0.0.1"
                           />
                         </v-flex>
                         <!-- Input for URL -->
-
-                        <v-flex v-if="!showOptions" class="text-xs-right" xs12>
-                          <v-btn small flat color="primary" @click="resetOptions">
-                            <v-icon small>refresh</v-icon> &nbsp; Set Default
-                          </v-btn>
-                          <!-- Reset Defaults -->
-
-                          <v-btn small flat color="primary" @click="resetOptions">
-                            <v-icon small>cancel</v-icon> &nbsp; Cancel
-                          </v-btn>
-                          <!-- Cancel Options -->
-                        </v-flex>
-                        <!-- Connection Options Fresh -->
-
                       </v-layout>
-                    </v-form>                 
-                  </v-flex>
-                </v-layout>
-                <!-- Init Form -->
-              <!-- </v-card-text>
-            </v-card> -->
+                    </v-flex>
+                    <!-- Inputs for URL -->
+
+                    <v-flex v-if="!showOptions" class="text-xs-right" xs12>
+                      <v-btn flat small color="primary" @click="showOptions = true">
+                        <v-icon small>add</v-icon> &nbsp; Customise Connection Options
+                      </v-btn>
+                    </v-flex>
+                    <!-- Input for URL -->
+
+                    <v-flex v-else xs12>
+                      <v-textarea
+                        v-model="optionsString"
+                        box
+                        label="Connection Options"
+                        hint="Set the connection options"
+                        auto-grow
+                        :placeholder="JSON.stringify(DEFAULT_OPTIONS, null, 2)"
+                        :error-messages="(optionsJSONParseError) ? ['Invalid JSON object'] : []"
+                      />
+                    </v-flex>
+                    <!-- Input for URL -->
+
+                    <v-flex v-if="showOptions" class="text-xs-right" xs12>
+                      <v-btn small flat color="primary" @click="resetOptions">
+                        <v-icon small>refresh</v-icon> &nbsp; Set Default
+                      </v-btn>
+                      <!-- Reset Defaults -->
+
+                      <v-btn small flat color="primary" @click="showOptions = false">
+                        <v-icon small>cancel</v-icon> &nbsp; Cancel
+                      </v-btn>
+                      <!-- Cancel Options -->
+                    </v-flex>
+                    <!-- Connection Options Fresh -->
+
+                  </v-layout>
+                </v-form>                 
+              </v-flex>
+            </v-layout>
           </v-stepper-content>
-          <!-- Init Step -->
+          <!-- Init Form Step-->
 
           <v-stepper-content step="2">
-            <!-- <v-card color="grey lighten-1" class="mb-5" height="200px" /> -->
-            <v-btn color="primary" @click="step = 1">Continue</v-btn>
-            <v-btn flat>Cancel</v-btn>
+            <v-layout row>
+              <v-flex xs12>
+                <v-form>
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <v-textarea
+                        v-model="authParams"
+                        box
+                        label="Authentication Options"
+                        hint="Set the authentication options"
+                        auto-grow
+                        :placeholder="JSON.stringify(DEFAULT_AUTH_PARAMS, null, 2)"
+                        :error-messages="(authsJSONParseError) ? ['Invalid JSON object'] : []"
+                      />
+                    </v-flex>
+                    <!-- Input for URL -->
+
+                    <v-flex class="text-xs-right" xs12>
+                      <v-btn small flat color="primary" @click="resetAuthParams">
+                        <v-icon small>refresh</v-icon> &nbsp; Set Default
+                      </v-btn>
+                      <!-- Reset Defaults -->
+                    </v-flex>
+                    <!-- Connection Options Fresh -->
+
+                  </v-layout>
+                </v-form>                 
+              </v-flex>
+            </v-layout>
           </v-stepper-content>
           <!-- Init Step -->
         </v-stepper-items>
@@ -117,7 +142,7 @@
 
     <v-card-actions v-if="step === 1">
       <v-spacer />
-      <v-btn color="primary" :loading="isLoggingIn" @click="login(url, options)">Login</v-btn>
+      <v-btn color="primary" :disabled="optionsJSONParseError" :loading="isLoggingIn" @click="clientInit">Set Connection</v-btn>
       <!-- Options Buttons -->
 
     </v-card-actions>
@@ -125,8 +150,10 @@
 
     <v-card-actions v-else-if="step === 2">
       <v-spacer />
-      <v-btn color="primary" :loading="isLoggingIn" @click="login(url, options)">Logina</v-btn>
-      <v-btn flat @click="test">testa</v-btn>
+      <v-btn flat :disabled="isLoggingIn" @click="clientCancel">
+        <v-icon>keyboard_arrow_left</v-icon> &nbsp; Change Connection
+      </v-btn>
+      <v-btn color="primary" :disabled="authsJSONParseError" :loading="isLoggingIn" @click="clientLogin">Login</v-btn>
       <!-- Options Buttons -->
 
     </v-card-actions>
@@ -142,10 +169,12 @@ export default {
     return {
       showOptions: false, // Flag showing options
       step: 1, // Step value used by the stepper
+
+      // WS Connection
       DEFAULT_WS_URL: 'localhost:8080', // Deepstream websockets url
       wsUrl: '', // Deepstream websockets url
 
-      // Deepstream default connection options
+      // Connection Options
       DEFAULT_OPTIONS: {
         mergeStrategy: 'MERGE_STRATEGIES.REMOTE_WINS',
         reconnectIntervalIncrement: 4000,
@@ -161,26 +190,36 @@ export default {
         timeBetweenSendingQueuedPackages: 16,
         recordDeepCopy: true
       },
-      options: '', // Deepstream connection options
+      optionsString: '', // Deepstream connection options
+
+      // Protocol
       DEFAULT_PROTOCOL: 'ws://', // Default selected protocol
       PROTOCOL_LIST: ['ws://', 'wss://'], // Available protocols
       selectedProtocol: '', // Select protocol container
 
+      // Authentication paramets
+      DEFAULT_AUTH_PARAMS: {
+        email: 'example@example.com',
+        username: 'exampleName',
+        password: '**********'
+      },
+      authParams: '',
+      //
       authType: 'email', // Conection type
       authUsername: '', // Login username
-      authPassword: '' // Login password
+      authPassword: '', // Login password
+
+      // Errors
+      optionsJSONParseError: false, // Flag indicating if there is an error parsing the options JSON
+      authsJSONParseError: false // Flag indicating if there is an error parsing the auths object
     }
   },
 
   computed: {
     ...mapGetters({
+      isInit: 'client/isInit',
       isLoggingIn: 'client/isLoggingIn',
-      isLoggingInSuccess: 'client/isLoggingInSuccess',
-      loginData: 'client/loginData',
-      connectionState: 'connection/connectionState',
-      error: 'connection/error',
-      errorEvent: 'connection/errorEvent',
-      errorTopic: 'connection/errorTopic'
+      isLoggedIn: 'client/isLoggedIn'
     }),
 
     /**
@@ -188,99 +227,100 @@ export default {
      */
     url() {
       return this.selectedProtocol + this.wsUrl
+    }
+  },
+
+  watch: {
+    isInit(value) {
+      if (value) this.step = 2
+      else this.step = 1
     },
 
-    /**
-     * Returns the authentication param
-     */
+    optionsString() {
+      this.optionsJSONParseError = false
+      try {
+        JSON.parse(this.optionsString)
+      } catch (error) {
+        this.optionsJSONParseError = true
+      }
+    },
+
     authParams() {
-      return {
-        type: this.authType,
-        email: this.authUsername,
-        password: this.authPassword
+      this.authsJSONParseError = false
+      try {
+        JSON.parse(this.authParams)
+      } catch (error) {
+        this.authsJSONParseError = true
       }
     }
   },
 
   mounted() {
     // Set defaults
-    this.setloginData({ data: {} })
-    this.step = 1
+    this.showOptions = false
     this.wsUrl = this.DEFAULT_WS_URL
-    this.options = JSON.stringify(this.DEFAULT_OPTIONS, null, 2)
+    this.optionsString = JSON.stringify(this.DEFAULT_OPTIONS, null, 2)
+    this.authParams = JSON.stringify(this.DEFAULT_AUTH_PARAMS, null, 2)
     this.selectedProtocol = this.DEFAULT_PROTOCOL
+    this.optionsJSONParseError = false
+    this.authsJSONParseError = false
+    if (this.isInit) this.step = 2
+    else this.step = 1
   },
 
   methods: {
     ...mapActions({
-      setLoggingIn: 'client/setLoggingIn',
-      setLoggingInSuccess: 'client/setLoggingInSuccess',
-      setloginData: 'client/setloginData',
       init: 'client/init',
-      setConnectionState: 'connection/setConnectionState',
-      setError: 'connection/setError',
-      setErrorEvent: 'connection/setErrorEvent',
-      setErrorTopic: 'connection/setErrorTopic',
-      test: 'connection/test'
+      cancel: 'client/cancel',
+      login: 'client/login'
     }),
 
     /**
      * Sets the options to their default
      */
     resetOptions() {
-      this.options = JSON.stringify(this.DEFAULT_OPTIONS, null, 2)
+      this.optionsString = JSON.stringify(this.DEFAULT_OPTIONS, null, 2)
     },
 
-    // initClient () {
-    //   this.init({url: this.url})
-    // },
+    /**
+     * Sets the auth params to their default
+     */
+    resetAuthParams() {
+      this.authParams = JSON.stringify(this.DEFAULT_AUTH_PARAMS, null, 2)
+    },
+
+    /**
+     * Attempt to init
+     */
+    clientInit() {
+      let options, url
+      this.optionsJSONParseError = false
+      // Attempt to parse options and init
+      try {
+        options = JSON.parse(this.optionsString)
+        url = this.url
+        console.log('clientInit', { url, options })
+        this.init({ url, options })
+      } catch (error) {
+        console.error(error)
+        this.optionsJSONParseError = true
+      }
+    },
+
+    /**
+     * Attempt to change connection
+     */
+    clientCancel() {
+      this.cancel()
+    },
 
     /**
      * Logs into and sets up the Deepstream client
      */
-    login() {
+    clientLogin() {
       // Log into deepstream
-      // Set up client
-      console.log('Setting Up Deepstream Client')
-      this.setloginData({ data: {} })
-      this.setLoggingIn({ status: false })
-      this.setLoggingInSuccess({ status: false })
-      this.$ds = this.$deepstream(this.url, this.options)
-
-      // Set up login events
-      console.log('Setting Up Deepstream Client Events')
-      this.$ds.on('connectionStateChanged', connectionState => {
-        console.log('Connection State Changed', connectionState)
-        this.setConnectionState({ connectionState })
-      })
-
-      this.$ds.on('error', (error, event, topic) => {
-        console.log('Connection Error', error, event, topic)
-        this.setError({ error })
-        this.setErrorEvent({ event })
-        this.setErrorTopic({ topic })
-      })
-
-      // Login
-      console.log('Logging in Deepstream Client')
-      this.setLoggingIn({ status: true })
-      this.$ds.login(this.authParams, (success, data) => {
-        // Set login status
-        this.setLoggingInSuccess({ status: !!success })
-
-        // Set login data
-        this.setloginData({ data })
-
-        if (success) {
-          console.log('Log In Successful')
-          this.$router.push('dashboard')
-        } else {
-          console.log('Log In Failed')
-        }
-
-        // Set logging in status
-        this.setLoggingIn({ status: false })
-      })
+      const authParams = {}
+      this.login({ authParams })
     }
   }
 }

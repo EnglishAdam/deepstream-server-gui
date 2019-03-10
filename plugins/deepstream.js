@@ -19,11 +19,11 @@ class DS {
     this._ds = deepstream
   }
 
-  get $ds() {
+  get $client() {
     return this._client
   }
 
-  set $ds(client) {
+  set $client(client) {
     this._client = client
   }
 }
@@ -49,10 +49,10 @@ Deepstream.install = function(Vue, options) {
   }
 
   // Represents the client
-  Vue.prototype.$ds = function() {
+  Vue.prototype.$client = function() {
     // Add $ds
-    ds.$ds = deepstream(options.url, options.options)
-    return ds.$ds
+    ds.$client = deepstream(options.url, options.options)
+    return ds.$client
   }
 }
 

@@ -3,10 +3,15 @@
     <v-toolbar-side-icon @click="$emit('click')" />
     <v-toolbar-title v-text="title" />
     <v-spacer />
+    <v-btn icon flat @click="cancel">
+      <v-icon>power_settings_new</v-icon>
+    </v-btn>
   </v-toolbar>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     // Flag if drawer should have app scaling
@@ -20,6 +25,12 @@ export default {
       type: String,
       required: true
     }
+  },
+
+  methods: {
+    ...mapActions({
+      cancel: 'client/cancel'
+    })
   }
 }
 </script>

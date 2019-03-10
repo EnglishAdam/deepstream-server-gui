@@ -13,7 +13,7 @@
 import ConnectionForm from '~/components/form/ConnectionForm.vue'
 
 export default {
-  layout: 'blank',
+  layout: 'login',
 
   components: {
     'ds-connection-form': ConnectionForm

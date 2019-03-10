@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import _Drawer from '~/components/NavigationDrawer/_Drawer.vue'
 import _Toolbar from '~/components/NavigationDrawer/_Toolbar.vue'
 
@@ -46,6 +47,18 @@ export default {
         }
       ],
       title: 'Deepstream Inspector'
+    }
+  },
+
+  computed: {
+    ...mapGetters({
+      isDisconnected: 'connection/isDisconnected'
+    })
+  },
+
+  watch: {
+    isDisconnected(value) {
+      if (value) return this.$router.push({ name: 'index' })
     }
   }
 }

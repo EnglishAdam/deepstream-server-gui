@@ -16,7 +16,7 @@ export const state = () => ({
    * 'AWAITING_AUTHENTICATION', // State after the client was initialised, but before .login() was called.
    * 'AUTHENTICATING', // State after .login() was called, but before the response from the platform is received.
    */
-  connectionState: null, // Connection for the container state
+  connectionState: '', // Connection for the container state
   error: null, // Error message container
   errorEvent: null, // Error event message container
   errorTopic: null // Error topic message container
@@ -25,7 +25,7 @@ export const state = () => ({
 export const getters = {
   isConnected: state => state.connectionState === 'OPEN', // True if connection established
   // True if not connected or esablishing
-  isNotConnected: state => {
+  isDisconnected: state => {
     return ['ERROR', 'CLOSED'].some(status => {
       return state.connectionState.includes(status)
     })
