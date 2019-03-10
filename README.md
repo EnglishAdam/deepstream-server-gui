@@ -1,6 +1,6 @@
 # deepstream-server-gui
 
-> A graphical user interface to interact with and test a deepstream server
+> A graphical user interface to interact with and test a Deepstream Server https://deepstream.io
 
 ## Build Setup
 
