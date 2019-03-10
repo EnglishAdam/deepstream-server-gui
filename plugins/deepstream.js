@@ -2,8 +2,8 @@ import Vue from 'vue'
 import deepstream from 'deepstream.io-client-js'
 
 class DS {
-  constructor(deepstream) {
-    this._ds = deepstream
+  constructor(deepstreamObj) {
+    this._ds = deepstreamObj
     this._client = null
   }
 
@@ -11,8 +11,8 @@ class DS {
     return this._ds
   }
 
-  set $deepstream(deepstream) {
-    this._ds = deepstream
+  set $deepstream(deepstreamObj) {
+    this._ds = deepstreamObj
   }
 
   get $client() {
