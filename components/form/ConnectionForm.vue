@@ -293,13 +293,13 @@ export default {
      * Attempt to init
      */
     clientInit() {
-      let options, url
+      let options
+      const url = this.url
+      if (!this.showOptions) return this.init({ url, options: {} })
       this.optionsJSONParseError = false
       // Attempt to parse options and init
       try {
         options = JSON.parse(this.optionsString)
-        url = this.url
-        console.log('clientInit', { url, options })
         this.init({ url, options })
       } catch (error) {
         console.error(error)
