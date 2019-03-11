@@ -1,6 +1,6 @@
 {
   "name": "deepstream-server-gui",
-  "version": "1.16.2",
+  "version": "1.16.3",
   "description": "A graphical user interface to interact with and test a deepstream server",
   "author": "Adam English",
   "private": true,
