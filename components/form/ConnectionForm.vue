@@ -320,7 +320,7 @@ export default {
     clientLogin() {
       // Log into deepstream
       try {
-        let authParams = JSON.parse(this.authParams)
+        const authParams = JSON.parse(this.authParams)
         console.log('clientLogin', { authParams })
         this.login({ authParams })
       } catch (error) {
