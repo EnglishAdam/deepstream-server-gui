@@ -86,6 +86,7 @@ export default {
 
     // Subscribe to presence changes
     this.$ds.$client.presence.subscribe((username, login) => {
+      console.log('subscribe', username, login)
       this.users[username] = login
     })
   },
